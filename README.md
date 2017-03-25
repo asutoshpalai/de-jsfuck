@@ -14,4 +14,4 @@ It deobfuscates JSFuck into readable JavaScript.
 
 ## Background details
 
-  [Blog post](blog.asutoshpalai.in/2017/03/jsfuck-is-bad-security-barrier.html)
+  [Blog post](http://blog.asutoshpalai.in/2017/03/jsfuck-is-bad-security-barrier.html)
