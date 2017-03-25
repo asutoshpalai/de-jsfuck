@@ -10,7 +10,7 @@ It deobfuscates JSFuck into readable JavaScript.
 
 - Run
 
-   $ sbcl --noinform --non-interactive --eval "(ql:quickload '(:cl-ppcre :de-jsfuck))"  --eval '(princ (de-jsfuck:to-js "<JSFuck Code>"))'
+      $ sbcl --noinform --non-interactive --eval "(ql:quickload '(:cl-ppcre :de-jsfuck))"  --eval '(princ (de-jsfuck:to-js "<JSFuck Code>"))'
 
 ## Background details
 
