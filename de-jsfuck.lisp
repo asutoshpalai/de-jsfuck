@@ -29,8 +29,15 @@
   "Given a string a starting pos where a bracket starts, it return
    where the position of the corresponding closing bracket in a
    nested bracket string, e.g. ([(()[])])"
-  (let* ((init-paren (char str start-pos))
+  (let* ((start-pos (if (paren-match (char str start-pos))
+                        start-pos
+                        (min (or (position #\[ str :start start-pos)
+                                 (length str))
+                             (or (position #\( str :start start-pos)
+                                 (length str)))))
+         (init-paren (char str start-pos))
          (close-paren (paren-match init-paren)))
+    (print init-paren)
     (loop
        for cur-pos = (+ 1 start-pos) then (+ 1 (match-parse str next-init))
        for next-close = (position close-paren str :start cur-pos)
@@ -114,11 +121,14 @@
            (if (cdr tokens)
                (tokens-to-string-list (cdr tokens))))
           ((listp start)
-           (if (eq (car start) 'func)
-               `("Function(\""
-                 ,@(tokens-to-string-list (cadr start))
-                 "\")"
-                 ,@(tokens-to-string-list (cdr tokens)))))
+           (cond ((eq (car start) 'func)
+                  `("Function(\""
+                    ,@(tokens-to-string-list (cadr start))
+                    "\")"
+                    ,@(tokens-to-string-list (cdr tokens))))
+                 ((eq (car start) 'unknown)
+                  `("<unknown: " ,(cadr start) ">"
+                                 ,@(tokens-to-string-list (cdr tokens))))))
           ((eq start '+)
            (tokens-to-string-list (cdr tokens)))
           ((eq start 'funcall)
