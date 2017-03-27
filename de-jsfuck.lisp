@@ -52,7 +52,14 @@
      for res = (prefix-match str val pos)
      until res
       ; do (print sym)
-     finally (return (and res sym))))
+     finally (return (and res (cons sym val)))))
+
+(defun test-func (str pos)
+  (loop for val in *function*
+     for res = (prefix-match str val pos)
+     until res
+     ; do (print val)
+     finally (return (and res val))))
 
 (defun tokenize (str &optional (pos 0))
   "Convert the string into corresponding recognisable entities. This does
@@ -73,20 +80,21 @@
       (return-from tokenize (cons
                              (to-num-sym s)
                              (tokenize str (+ pos (length s)))))))
-  (let ((sym (test-others str pos)))
-    (when sym
+  (let ((res (test-others str pos)))
+    (when res
      ; (print sym)
       (return-from tokenize (cons
-                             sym
-                             (tokenize str (+ pos (length (getf *token-map* sym))))))))
-  (when (prefix-match str *Function* pos)
-    (let* ((end (+ pos (length *Function*)))
-           (paren-end (match-parse str end)))
-     ; (print "func")
-      (return-from tokenize
+                             (car res)
+                             (tokenize str (+ pos (length (cdr res))))))))
+  (let ((f-str (test-func str pos)))
+    (when f-str
+      (let* ((end (+ pos (length f-str)))
+             (paren-end (match-parse str end)))
+        ; (print "func")
+        (return-from tokenize
           `((func
              ,(tokenize (subseq str (+ 1 end) paren-end)))
-            ,@(tokenize str (+ 1 paren-end))))))
+            ,@(tokenize str (+ 1 paren-end)))))))
   (loop
      for next = pos then (+ 1 (match-parse str next))
      while (and (< next (length str))
@@ -101,9 +109,11 @@
 (defun tokens-to-string-list (tokens)
   "Convert the token list from tokenizer into a list of strings that
    can be concatenated to get the actual JS code"
- ; (print tokens)
   (let ((start (first tokens)))
-    (cond ((listp start)
+    (cond ((not start)
+           (if (cdr tokens)
+               (tokens-to-string-list (cdr tokens))))
+          ((listp start)
            (if (eq (car start) 'func)
                `("Function(\""
                  ,@(tokens-to-string-list (cadr start))
