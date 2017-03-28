@@ -4,13 +4,14 @@ It deobfuscates JSFuck into readable JavaScript.
 
 ## Quick use guide
 
-- Install sbcl
+_If you have already setup SBCL with Quicklisp, the you can skip installing Roswell_
 
-- Install quicklisp (https://www.quicklisp.org/beta/#installation) 
+- Install and setup [Roswell](https://github.com/roswell/roswell#installation-dependency--usage)
 
 - Run
 
-      $ sbcl --noinform --non-interactive --eval "(ql:quickload '(:cl-ppcre :de-jsfuck))"  --eval '(princ (de-jsfuck:to-js "<JSFuck Code>"))'
+      $ ./run.sh '<JSFuck Code>'
+
 
 ## Background details
 
