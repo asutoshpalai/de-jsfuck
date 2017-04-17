@@ -37,7 +37,7 @@
                                  (length str)))))
          (init-paren (char str start-pos))
          (close-paren (paren-match init-paren)))
-    (print init-paren)
+    ; (print init-paren)
     (loop
        for cur-pos = (+ 1 start-pos) then (+ 1 (match-parse str next-init))
        for next-close = (position close-paren str :start cur-pos)
