@@ -13,6 +13,6 @@ else
   echo 'Error: neither roswell non sbcl is installed.' >&2
   exit 1
 fi
-
-$LISP  --eval "(push *default-pathname-defaults* asdf:*central-registry*)" --eval "(ql:quickload '(:cl-ppcre :de-jsfuck) :silent t)"  --eval "(princ (de-jsfuck:to-js \"$(printf '%q' $1)\"))"
+value=`cat $1`
+$LISP  --eval "(push *default-pathname-defaults* asdf:*central-registry*)" --eval "(ql:quickload '(:cl-ppcre :de-jsfuck) :silent t)"  --eval "(princ (de-jsfuck:to-js \"$(echo $value)\"))"
 echo
