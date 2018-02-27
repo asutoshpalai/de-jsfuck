@@ -10,7 +10,7 @@ _If you have already setup SBCL with Quicklisp, the you can skip installing Rosw
 
 - Run
 
-      $ ./run.sh '<JSFuck Code>'
+      $ ./run.sh '<File_Name_Containg_JsFuck_Code>'
 
 
 ## Background details
