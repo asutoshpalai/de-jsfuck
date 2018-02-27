@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 1  ]; then
-  echo "Usage: $0 <JSFuck code>";
+  echo "Usage: $0 <JSFuck file>";
   exit 1
 fi
 
@@ -10,9 +10,10 @@ if [ -x "$(command -v ros)"  ]; then
 elif [ -x "$(command -v sbcl)"  ]; then
   LISP="sbcl --noinform  --non-interactive"
 else
-  echo 'Error: neither roswell non sbcl is installed.' >&2
+  echo 'Error: neither roswell nor sbcl (with quicklisp) is installed.' >&2
   exit 1
 fi
+
 value=`cat $1`
 $LISP  --eval "(push *default-pathname-defaults* asdf:*central-registry*)" --eval "(ql:quickload '(:cl-ppcre :de-jsfuck) :silent t)"  --eval "(princ (de-jsfuck:to-js \"$(echo $value)\"))"
 echo
